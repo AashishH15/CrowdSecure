@@ -11,6 +11,10 @@ if 'transactions' not in st.session_state:
 
 if not st.session_state['loggedin']:
     st.title("Welcome to our Charity Blockchain!")
+    st.markdown("""
+    This application is designed to help open source developers get funding and raise donations for those who need it.
+    By making a donation, you are supporting the open source community and helping those in need.
+    """)
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
@@ -22,9 +26,8 @@ else:
     st.title(f"Welcome back, {st.session_state['username']}!")
     st.sidebar.title("Navigation")
     st.sidebar.write("Choose a page to navigate to.")
-    st.subheader("Transaction History")
 
-    page = st.sidebar.selectbox("Choose a page", ["Make a Donation/Transfer Money"])
+    page = st.sidebar.selectbox("Choose a page", ["Make a Donation/Transfer Money", "Transaction History"])
 
     if page == "Make a Donation/Transfer Money":
         sender = st.session_state['username']
@@ -37,3 +40,7 @@ else:
             st.write(result)
         else:
             st.write("Enter the transaction details.")
+    elif page == "Transaction History":
+        st.subheader("Transaction History")
+        for transaction in st.session_state['transactions']:
+            st.write(transaction)
