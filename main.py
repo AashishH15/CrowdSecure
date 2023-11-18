@@ -1,5 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+import math
 
 
 def send_money(sender, receiver, amount):
@@ -65,5 +66,5 @@ else:
                 st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount})
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
                 total_raised += donation_amount
-                progress = total_raised / goal_amount
+                progress = min(total_raised / goal_amount, 1)
                 st.progress(progress)
