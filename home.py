@@ -1,13 +1,13 @@
 import streamlit as st
 
-def send_money(sender, receiver, amount, currency):
-    return f"{sender} sent {amount} {currency} to {receiver}."
+def send_money(sender, receiver, amount):
+    return f"{sender} sent {amount} to {receiver}."
 
 if 'loggedin' not in st.session_state:
     st.session_state['loggedin'] = False
 
-if 'transactions' not in st.session_state:
-    st.session_state['transactions'] = []
+if 'donations' not in st.session_state:
+    st.session_state['donations'] = []
 
 if not st.session_state['loggedin']:
     st.title("Welcome to our Charity Blockchain!")
@@ -30,21 +30,38 @@ if not st.session_state['loggedin']:
 
 else:
     st.title(f"Welcome back, {st.session_state['username']}!")
-    st.subheader("Transaction History")
-    st.sidebar.title("Navigation")
-    st.sidebar.write("Choose a page to navigate to.")
 
-    page = st.sidebar.selectbox("Choose a page", ["Make a Donation/Transfer Money"])
+    page = st.sidebar.selectbox("Choose a page", ["Make a Donation/Transfer Money", "Live Donations"])
 
     if page == "Make a Donation/Transfer Money":
+        st.subheader("Transaction History")
         sender = st.session_state['username']
         receiver = st.sidebar.text_input("Receiver")
         amount = st.sidebar.number_input("Amount", min_value=1, step=5)  # Set step to 5
-        currency = st.sidebar.selectbox("Choose a currency", ["USD", "EUR", "GBP", "JPY", "CNY", "BTC", "ETH", "LTC"])
+        currency = st.sidebar.selectbox("Choose a currency", ["USD", "EUR", "BTC", "ETH"])
+        description = st.sidebar.text_input("Description")
 
         if st.sidebar.button("Send"):
-            result = send_money(sender, receiver, amount, currency)
-            st.session_state['transactions'].append(result)
+            result = send_money(sender, receiver, amount, currency, description)
+            st.session_state['transactions'].append({"Sender": sender, "Receiver": receiver, "Amount": amount, "Currency": currency, "Description": description})
             st.write(result)
         else:
             st.write("Enter the transaction details.")
+
+    elif page == "Live Donations":
+        st.subheader("Live Donations")
+
+        # Assume we have these variables
+        total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
+        goal_amount = 10000
+
+        with st.form(key='donation_form'):
+            donation_amount = st.number_input('Enter donation amount', min_value=1)
+            submit_button = st.form_submit_button(label='Donate')
+
+            if submit_button:
+                st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount})
+                st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
+                total_raised += donation_amount
+                progress = total_raised / goal_amount
+                st.progress(progress)
