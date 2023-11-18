@@ -1,4 +1,6 @@
 import streamlit as st
+import matplotlib.pyplot as plt
+
 
 def send_money(sender, receiver, amount):
     return f"{sender} sent {amount} to {receiver}."
