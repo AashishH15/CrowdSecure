@@ -53,15 +53,11 @@ else:
     elif page == "Live Donations":
         st.subheader("Live Donations")
 
+        # Assume we have these variables
+        total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
+        goal_amount = 10000
+
         with st.form(key='donation_form'):
-            # Assume we have these variables
-            total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
-            goal_amount = 100
-
-            st.write("### Local Food Bank")
-            st.write(f"Goal Amount: ${goal_amount}")
-            st.write(f"Total Raised So Far: ${total_raised}")
-
             donation_amount = st.number_input('Enter donation amount', min_value=1)
             submit_button = st.form_submit_button(label='Donate')
 
@@ -69,5 +65,5 @@ else:
                 st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount})
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
                 total_raised += donation_amount
-                progress = min(total_raised / goal_amount, 1.0)
+                progress = total_raised / goal_amount
                 st.progress(progress)
