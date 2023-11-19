@@ -45,3 +45,12 @@ Close and re-open terminal. It should auto open you into your virtual environmen
 Now you're ready to deploy!
 
 ``` streamlit run main.py ```
+
+Play around with adding donations! For the currently available Hedera Accounts, you can see your funds updating live on HashScan! Check ours out here:
+
+https://hashscan.io/testnet/account/0.0.5906653?app=false&p2=1&pt=1&ph=1
+https://hashscan.io/testnet/account/0.0.5906771?app=false&p2=1&ph=1&pt=1
+https://hashscan.io/testnet/account/0.0.5906772?app=false&ph=1&p2=1&pt=1&p1=1&k1=1700409879.048807821
+
+![Hashcan](https://github.com/AashishH15/CrowdSecure/assets/10564686/3887b405-d929-45cd-a6e5-2e1db3d92e98)
+
