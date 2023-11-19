@@ -2,7 +2,7 @@ import json
 
 def getAccountBalance(account_id):
     
-    f = open('/Users/divyalakshmivaradharajanpremsudha/MHacks/MHack-1/data/data.json', 'r')
+    f = open('C:/Users/aashi/OneDrive/Desktop/MHack/data/data.json', 'r')
 
     data = json.loads(f.read())
 
@@ -14,7 +14,7 @@ def getAccountBalance(account_id):
 
 def getTransactionReceipt(account_id):
     
-    f = open('/Users/divyalakshmivaradharajanpremsudha/MHacks/MHack-1/data/data.json', 'r')
+    f = open('C:/Users/aashi/OneDrive/Desktop/MHack/data/data.json', 'r')
 
     data = json.loads(f.read())
 
@@ -26,7 +26,7 @@ def getTransactionReceipt(account_id):
 
 def getKeys():
      
-    f = open('/Users/divyalakshmivaradharajanpremsudha/MHacks/MHack-1/data/data.json', 'r')
+    f = open('C:/Users/aashi/OneDrive/Desktop/MHack/data/data.json', 'r')
 
     key_list = []
 

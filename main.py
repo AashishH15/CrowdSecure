@@ -35,6 +35,7 @@ if 'donation_counts' not in st.session_state:
 
 if not st.session_state['loggedin']:
     st.title("Welcome to Crowd Secure!")
+
     with st.container():
         col1, col2 = st.columns(2)
         with col1:
@@ -42,8 +43,8 @@ if not st.session_state['loggedin']:
         with col2:
             st.markdown("""
             <div style="text-align: justify">
-            <h4>Welcome to the home designed to make crowd funded donations on a decentralized server.</h4>
-            <p>This application serves a dual purpose: it supports open source developers and aids those in need, such as charities feeding the homeless, and more. Think of this as a blend of charity and support, leveraging the power of decentralized technology for good.<p>
+            <h4>Welcome to our decentralized, crowd-funded charity platform.</h4>
+            <p>This platform utilizes blockchain technology to ensure secure and reliable donations to charities. By leveraging Hedera's decentralized network and Gitcoin's quadratic funding match model, we aim to empower philanthropy and prevent scams, ensuring your contributions reach the intended organizations.</p>
             </div>
             """, unsafe_allow_html=True)
     
@@ -63,7 +64,18 @@ else:
     if st.session_state['loggedin']:
         if st.sidebar.button('Logout'):  # Add a logout button in the sidebar
             st.session_state['loggedin'] = False
-            st.info('Logged out successfully.')
+            st.markdown("""
+            <div style="
+                color: red; 
+                border: 2px solid red; 
+                border-radius: 5px;
+                text-align: center;
+                background-color: #ffe6e6;
+                padding: 10px; 
+                margin: 5px;">
+            Click again to Confirm Log Out.
+            </div>
+            """, unsafe_allow_html=True)
             
     st.sidebar.image("https://shorturl.at/uvLU7", use_column_width=True)
 
@@ -76,7 +88,7 @@ else:
         # Display the total donations in a box
         st.markdown("## My Donation Stats")
         st.info(f"My Total Donation: ${user_donations}")
-        st.markdown("                                  ")
+        st.write('---------------------------------')
 
         # Section for individual donation rounds
         st.markdown("## Global Donation Stats for the Current Round")
@@ -85,9 +97,9 @@ else:
 
         if st.button("Unleash the Power of Quadratic Funding"):
             # Get the current total funds for each project
-            totalFunds_A_current = getAccountBalance(account_A_id)
-            totalFunds_B_current = getAccountBalance(account_B_id)
-            totalFunds_C_current = getAccountBalance(account_C_id)
+            totalFunds_A_current = round(getAccountBalance(account_A_id), 2)
+            totalFunds_B_current = round(getAccountBalance(account_B_id), 2)
+            totalFunds_C_current = round(getAccountBalance(account_C_id), 2)
                     
             # Replace ADonors, BDonors, CDonors with your actual donor counts
             ADonors = len(round_donations["Account A"])
@@ -105,59 +117,49 @@ else:
             st.session_state['donation_counts']["Account C"] = round(new_funds_C,2)
 
             # Assume you have the crowd funded amounts and match amounts
-        accounts = ['Campaign A', 'Campaign B', 'Campaign C']
-        crowd_funded_amounts = [1000, 2000, 3000]  # replace with your actual values
-        match_amounts = [500, 1000, 1500]  # replace with your actual values
+            accounts = ['Campaign A', 'Campaign B', 'Campaign C']
+            crowd_funded_amounts = [totalFunds_A_current, totalFunds_B_current, totalFunds_C_current]
+            match_amounts = [ADonors, BDonors, CDonors]
 
-        # New funds calculated from quadratic funding function
-        new_funds = [750, 1250, 1750]  # replace with your calculated new funds
+            # New funds calculated from quadratic funding function
+            new_funds = [round(new_funds_A, 2), round(new_funds_B, 2), round(new_funds_C, 2)]
 
-        # Create a bar chart
-        fig = go.Figure()
+            # Create a bar chart
+            fig = go.Figure()
 
-        # Add crowd funded amounts as bars
-        fig.add_trace(go.Bar(
-            x=accounts,
-            y=crowd_funded_amounts,
-            name='Crowd Funded Amount',
-            text=crowd_funded_amounts,  # Display the values on bars
-            textposition='auto',
-            marker=dict(color='blue')
-        ))
+            # Add crowd funded amounts as bars
+            fig.add_trace(go.Bar(
+                x=accounts,
+                y=crowd_funded_amounts,
+                name='Crowd Funded Amount',
+                text=crowd_funded_amounts,  # Display the values on bars
+                textposition='auto',
+                marker=dict(color='blue')
+            ))
 
-        # Add match amounts as bars
-        fig.add_trace(go.Bar(
-            x=accounts,
-            y=match_amounts,
-            name='Match Amount',
-            text=match_amounts,  # Display the values on bars
-            textposition='auto',
-            marker=dict(color='red')
-        ))
+            # Add match funds as bars
+            fig.add_trace(go.Bar(
+                x=accounts,
+                y=new_funds,
+                name='Match Amount',
+                text=new_funds,  # Display the values on bars
+                textposition='auto',
+                marker=dict(color='red')
+            ))
 
-        # Add new funds as bars
-        fig.add_trace(go.Bar(
-            x=accounts,
-            y=new_funds,
-            name='New Funds',
-            text=new_funds,  # Display the values on bars
-            textposition='auto',
-            marker=dict(color='green')
-        ))
+            # Customize layout
+            fig.update_layout(
+                title='Quadratic Funding - Account Breakdown',
+                xaxis_title='Campaigns',
+                yaxis_title='Amount',
+                barmode='group',
+                width=700,
+                height=500,
+                margin=dict(r=20, b=10, l=10, t=40),
+            )
 
-        # Customize layout
-        fig.update_layout(
-            title='Quadratic Funding - Account Breakdown',
-            xaxis_title='Campaigns',
-            yaxis_title='Amount',
-            barmode='group',
-            width=700,
-            height=500,
-            margin=dict(r=20, b=10, l=10, t=40),
-        )
-
-        # Display the figure
-        st.plotly_chart(fig)
+            # Display the figure
+            st.plotly_chart(fig)
         
         col1, col2, col3 = st.columns(3)
 
@@ -188,7 +190,7 @@ else:
             st.markdown(f"Number of Donations: {number_of_donations}")
             st.write(f"Match Amount for Campaign C: {st.session_state['donation_counts']['Account C']}")
 
-        st.markdown("                                  ")
+        st.write('---------------------------------')
         st.markdown("## My Latest Donations")
         latest_donations = st.session_state['donations'][-5:]
         for donation in latest_donations:
@@ -325,6 +327,19 @@ else:
 
         # Filter donations made by the current user
         user_donations = [donation for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username']]
+
+        # Add a dropdown box for sorting
+        sort_option = st.selectbox('Sort by:', ('Amount (High to Low)', 'Amount (Low to High)', 'Alphabetical (A to Z)', 'Alphabetical (Z to A)'))
+
+        # Sort donations based on the selected option
+        if sort_option == 'Amount (High to Low)':
+            user_donations = sorted(user_donations, key=lambda donation: donation['Amount'], reverse=True)
+        elif sort_option == 'Amount (Low to High)':
+            user_donations = sorted(user_donations, key=lambda donation: donation['Amount'])
+        elif sort_option == 'Alphabetical (A to Z)':
+            user_donations = sorted(user_donations, key=lambda donation: donation['Account'])
+        elif sort_option == 'Alphabetical (Z to A)':
+            user_donations = sorted(user_donations, key=lambda donation: donation['Account'], reverse=True)
 
         # Display each donation
         for donation in user_donations:
