@@ -10,11 +10,7 @@ Empowering philathrophy with transparent, secure donations through our blockchai
 This project was built using these technologies.
 <img width="879" alt="Screenshot 2023-11-19 at 9 59 05 AM" src="https://github.com/AashishH15/Crowd-Secure/assets/69458308/53016abb-993c-43c0-bb7e-5bc1928f29d9">
 
-- Streamlit
-- Node.js (Javascript)
-- Hedera SDK
-- GitCoin
-- Python
+- Streamlit, Node.js (Javascript), Hedera SDK, GitCoin, Python
 
 ## Features
 
