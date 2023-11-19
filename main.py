@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 import math
 import subprocess
 import os
-from connect import run_node_command  # Add this line
+from connect import run_node_command
+from quadratic_funding import getAccountBalance
 
 
 def send_money(sender, receiver, amount, currency, description):
