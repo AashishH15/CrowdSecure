@@ -3,19 +3,9 @@ import matplotlib.pyplot as plt
 import math
 import subprocess
 import os
-import time
 from connect import run_node_command
 from quadratic_funding import getAccountBalance
 
-def countdown_timer(duration):
-    with st.sidebar:
-        timer_placeholder = st.empty()  # Placeholder for the timer display
-        while duration:
-            mins, secs = divmod(duration, 60)
-            timer = f'{mins:02d}:{secs:02d}'
-            timer_placeholder.write(f'Time remaining: {timer}')  # Update timer value dynamically
-            time.sleep(1)
-            duration -= 1
 
 def send_money(sender, receiver, amount, currency, description):
     return f"{sender} sent {amount} {currency} to {receiver} for {description}."
@@ -77,27 +67,13 @@ else:
     page = st.sidebar.selectbox("Choose a Donation", ["Homepage", "Account A", "Account B", "Account C", "Donation History"])
     st.session_state['current_page'] = page
 
-     # Check if the timer is running
-    if 'timer_running' not in st.session_state:
-        st.session_state.timer_running = False
-
-    # Start the timer automatically when the website loads
-    if not st.session_state.timer_running:
-        st.session_state.timer_running = True
-        st.session_state.timer_duration = 60  # Set default timer duration in seconds
-        countdown_timer(st.session_state.timer_duration)
-
-    # Stop the timer when the button is clicked
-    if st.button('Stop Timer'):
-        st.session_state.timer_running = False
-
     if page == "Homepage":
         st.subheader("Homepage")
 
         # Section for individual donation rounds
         st.markdown("## Your Donations for Current Round:")
         round_donations = {account: [donation for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username'] and donation['Account'] == account] for account in ["Account A", "Account B", "Account C"]}
-        
+
         col1, col2, col3 = st.columns(3)
 
         with col1:
@@ -127,7 +103,6 @@ else:
         # Section for lifetime donations
         st.markdown("## Your Lifetime Donations:")
         col1, col2, col3 = st.columns(3)
-
 
         with col1:
             user_donations = sum([donation['Amount'] for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username']])
