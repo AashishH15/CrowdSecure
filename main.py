@@ -67,16 +67,19 @@ else:
             
     st.sidebar.image("https://shorturl.at/uvLU7", use_column_width=True)
 
-    st.title(f"Welcome back, {st.session_state['username']}!")
-
     page = st.sidebar.selectbox("Choose a Donation", ["Homepage", "Account A", "Account B", "Account C", "Donation History"])
     st.session_state['current_page'] = page
 
     if page == "Homepage":
-        st.subheader("Homepage")
+        st.title(f"Welcome back, {st.session_state['username']}!")
+        user_donations = sum([donation['Amount'] for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username']])
+        # Display the total donations in a box
+        st.markdown("## My Donation Stats")
+        st.info(f"My Total Donation: ${user_donations}")
+        st.markdown("                                  ")
 
         # Section for individual donation rounds
-        st.markdown("## Global Donation Stats for the Current Round:")
+        st.markdown("## Global Donation Stats for the Current Round")
         round_donations = {account: [donation for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username'] and donation['Account'] == account] for account in ["Account A", "Account B", "Account C"]}
 
 
@@ -102,60 +105,65 @@ else:
             st.session_state['donation_counts']["Account C"] = round(new_funds_C,2)
 
             # Assume you have the crowd funded amounts and match amounts
-            crowd_funded_amounts = [1000, 2000, 3000]  # replace with your actual values
-            match_amounts = [500, 1000, 1500]  # replace with your actual values
+        accounts = ['Campaign A', 'Campaign B', 'Campaign C']
+        crowd_funded_amounts = [1000, 2000, 3000]  # replace with your actual values
+        match_amounts = [500, 1000, 1500]  # replace with your actual values
 
-            # Create a 3D scatter plot
-            fig = go.Figure()
+        # New funds calculated from quadratic funding function
+        new_funds = [750, 1250, 1750]  # replace with your calculated new funds
 
-            # Add the crowd funded amounts as a 3D scatter plot
-            fig.add_trace(go.Scatter3d(
-                x=['Account A', 'Account B', 'Account C'],
-                y=crowd_funded_amounts,
-                z=[new_funds_A, new_funds_B, new_funds_C],
-                mode='markers',
-                marker=dict(
-                    size=10,
-                    color='blue',  # set color to blue
-                    opacity=0.8
-                ),
-                name='Crowd Funded Amount'
-            ))
+        # Create a bar chart
+        fig = go.Figure()
 
-            # Add the match amounts as a 3D scatter plot
-            fig.add_trace(go.Scatter3d(
-                x=['Account A', 'Account B', 'Account C'],
-                y=match_amounts,
-                z=[new_funds_A, new_funds_B, new_funds_C],
-                mode='markers',
-                marker=dict(
-                    size=10,
-                    color='red',  # set color to red
-                    opacity=0.8
-                ),
-                name='Match Amount'
-            ))
+        # Add crowd funded amounts as bars
+        fig.add_trace(go.Bar(
+            x=accounts,
+            y=crowd_funded_amounts,
+            name='Crowd Funded Amount',
+            text=crowd_funded_amounts,  # Display the values on bars
+            textposition='auto',
+            marker=dict(color='blue')
+        ))
 
-            # Customize layout
-            fig.update_layout(
-                title='Quadratic Funding',
-                scene=dict(
-                    xaxis_title='Account',
-                    yaxis_title='Amount',
-                    zaxis_title='New Funds',
-                ),
-                width=700,
-                margin=dict(r=20, b=10, l=10, t=10)
-            )
+        # Add match amounts as bars
+        fig.add_trace(go.Bar(
+            x=accounts,
+            y=match_amounts,
+            name='Match Amount',
+            text=match_amounts,  # Display the values on bars
+            textposition='auto',
+            marker=dict(color='red')
+        ))
 
-            # Display the figure
-            st.plotly_chart(fig)
+        # Add new funds as bars
+        fig.add_trace(go.Bar(
+            x=accounts,
+            y=new_funds,
+            name='New Funds',
+            text=new_funds,  # Display the values on bars
+            textposition='auto',
+            marker=dict(color='green')
+        ))
+
+        # Customize layout
+        fig.update_layout(
+            title='Quadratic Funding - Account Breakdown',
+            xaxis_title='Campaigns',
+            yaxis_title='Amount',
+            barmode='group',
+            width=700,
+            height=500,
+            margin=dict(r=20, b=10, l=10, t=40),
+        )
+
+        # Display the figure
+        st.plotly_chart(fig)
         
         col1, col2, col3 = st.columns(3)
 
         with col1:
             account = "Account A"
-            st.markdown(f"**{account}:**")
+            st.markdown(f"##### {account}:")
             total_donations = getAccountBalance(account_A_id)
             st.markdown(f"Crowd Funded Amount: ${total_donations}")
             number_of_donations = len(round_donations[account])
@@ -164,7 +172,7 @@ else:
 
         with col2:
             account = "Account B"
-            st.markdown(f"**{account}:**")
+            st.markdown(f"##### {account}:")
             total_donations = getAccountBalance(account_B_id)
             st.markdown(f"Crowd Funded Amount: ${total_donations}")
             number_of_donations = len(round_donations[account])
@@ -173,23 +181,15 @@ else:
 
         with col3:
             account = "Account C"
-            st.markdown(f"**{account}:**")
+            st.markdown(f"##### {account}:")
             total_donations = getAccountBalance(account_C_id)
             st.markdown(f"Crowd Funded Amount: ${total_donations}")
             number_of_donations = len(round_donations[account])
             st.markdown(f"Number of Donations: {number_of_donations}")
             st.write(f"Match Amount for Campaign C: {st.session_state['donation_counts']['Account C']}")
 
-        # Section for lifetime donations
-        st.markdown("## My Donation Stats:")
-        col1, col2 = st.columns(2)
-
-        with col1:
-            user_donations = getAccountBalance(account_A_id) + getAccountBalance(account_B_id) + getAccountBalance(account_C_id)
-            st.markdown(f"**MyTotal Donation:**")
-            st.markdown(f"## ${user_donations}")
-
-        st.subheader("My Latest Donations")
+        st.markdown("                                  ")
+        st.markdown("## My Latest Donations")
         latest_donations = st.session_state['donations'][-5:]
         for donation in latest_donations:
             st.markdown(f"{donation['Donor']} donated ${donation['Amount']} to {donation['Account']}")
@@ -209,7 +209,7 @@ else:
 
         Join us in our fight against hunger. Together, we can ensure that no one in our community goes to bed hungry. Your support can make a real difference. Thank you.
         """)
-
+        st.image("https://shorturl.at/bmqxI", use_column_width=True)
         total_raised = getAccountBalance(account_A_id)
         goal_amount = 15000
         st.write(f"Goal amount: ${goal_amount}")
@@ -251,7 +251,7 @@ else:
                  
         We are committed to helping people in need around the world. Your donation will go directly towards providing food, water, shelter, and medical care to those who need it most. Thank you for your support!
         """)
-
+        st.image("https://shorturl.at/grvHS", use_column_width=True)
         total_raised = getAccountBalance(account_B_id)
         goal_amount = 20000
         st.write(f"Goal amount: ${goal_amount}")
@@ -293,7 +293,7 @@ else:
 
         Together, we can give these children the love and care they need to succeed in life. Thank you for your support!
         """)
-
+        st.image("https://shorturl.at/fimwB", use_column_width=True)
         total_raised = getAccountBalance(account_C_id)
         goal_amount = 10000
         st.write(f"Goal amount: ${goal_amount}")
