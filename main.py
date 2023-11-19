@@ -34,7 +34,7 @@ if 'donation_counts' not in st.session_state:
     st.session_state['donation_counts'] = {"Account A": 0, "Account B": 0, "Account C": 0}
 
 if not st.session_state['loggedin']:
-    st.title("Welcome to CrowdSecure!")
+    st.markdown("# Welcome to <span style='color:orange'>CrowdSecure</span>!", unsafe_allow_html=True)
 
     with st.container():
         col1, col2 = st.columns(2)
