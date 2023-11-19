@@ -62,11 +62,32 @@ else:
     if page == "Homepage":
         st.subheader("Homepage")
 
-        # Add a welcome message
-        st.markdown(f"## Welcome back, {st.session_state['username']}!")
-        st.markdown("Here's a summary of your donations:")
+        # Section for individual donation rounds
+        st.markdown("## Your Donations for Current Round:")
+        round_donations = {account: [donation for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username'] and donation['Account'] == account] for account in ["Account A", "Account B", "Account C"]}
 
-        # Create columns for the donation summary
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            account = "Account A"
+            st.markdown(f"**{account}:**")
+            for donation in round_donations[account]:
+                st.markdown(f"Donated ${donation['Amount']}")
+
+        with col2:
+            account = "Account B"
+            st.markdown(f"**{account}:**")
+            for donation in round_donations[account]:
+                st.markdown(f"Donated ${donation['Amount']}")
+
+        with col3:
+            account = "Account C"
+            st.markdown(f"**{account}:**")
+            for donation in round_donations[account]:
+                st.markdown(f"Donated ${donation['Amount']}")
+
+        # Section for lifetime donations
+        st.markdown("## Your Lifetime Donations:")
         col1, col2, col3 = st.columns(3)
 
         with col1:
@@ -75,9 +96,10 @@ else:
             st.markdown(f"## ${user_donations}")
 
         with col2:
-            user_donation_count = len([donation for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username']])
-            st.markdown(f"**Number of Donations Made:**")
-            st.markdown(f"## {user_donation_count}")
+            account_donation_counts = {account: len([donation for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username'] and donation['Account'] == account]) for account in ["Account A", "Account B", "Account C"]}
+            st.markdown(f"**Number of Donations to Each Account:**")
+            for account, count in account_donation_counts.items():
+                st.markdown(f"{account}: {count}")
 
         with col3:
             account_donations = {account: sum([donation['Amount'] for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username'] and donation['Account'] == account]) for account in ["Account A", "Account B", "Account C"]}
@@ -140,3 +162,13 @@ else:
                 total_raised += donation_amount
                 progress = min(total_raised / goal_amount, 1)
                 st.progress(progress)
+    
+    elif page == "Donation History":
+        st.subheader("Donation History")
+
+        # Filter donations made by the current user
+        user_donations = [donation for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username']]
+
+        # Display each donation
+        for donation in user_donations:
+            st.markdown(f"You donated ${donation['Amount']} to {donation['Account']}")
