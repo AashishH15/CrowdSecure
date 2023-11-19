@@ -3,6 +3,9 @@ sys.path.append('main_src')
 
 import streamlit as st
 import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+import plotly.graph_objects as go
 from connect import run_node_command
 from quadratic_funding import getQuadFunding
 from downloadData import getAccountBalance, getTransactionReceipt, getKeys
@@ -76,13 +79,13 @@ else:
         st.markdown("## Global Donation Stats for the Current Round:")
         round_donations = {account: [donation for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username'] and donation['Account'] == account] for account in ["Account A", "Account B", "Account C"]}
 
+
         if st.button("Unleash the Power of Quadratic Funding"):
             # Get the current total funds for each project
-            # Replace these initial values with your actual total funds
             totalFunds_A_current = getAccountBalance(account_A_id)
             totalFunds_B_current = getAccountBalance(account_B_id)
             totalFunds_C_current = getAccountBalance(account_C_id)
-                
+                    
             # Replace ADonors, BDonors, CDonors with your actual donor counts
             ADonors = len(round_donations["Account A"])
             BDonors = len(round_donations["Account B"])
@@ -97,6 +100,56 @@ else:
             st.session_state['donation_counts']["Account A"] = round(new_funds_A,2)
             st.session_state['donation_counts']["Account B"] = round(new_funds_B,2)
             st.session_state['donation_counts']["Account C"] = round(new_funds_C,2)
+
+            # Assume you have the crowd funded amounts and match amounts
+            crowd_funded_amounts = [1000, 2000, 3000]  # replace with your actual values
+            match_amounts = [500, 1000, 1500]  # replace with your actual values
+
+            # Create a 3D scatter plot
+            fig = go.Figure()
+
+            # Add the crowd funded amounts as a 3D scatter plot
+            fig.add_trace(go.Scatter3d(
+                x=['Account A', 'Account B', 'Account C'],
+                y=crowd_funded_amounts,
+                z=[new_funds_A, new_funds_B, new_funds_C],
+                mode='markers',
+                marker=dict(
+                    size=10,
+                    color='blue',  # set color to blue
+                    opacity=0.8
+                ),
+                name='Crowd Funded Amount'
+            ))
+
+            # Add the match amounts as a 3D scatter plot
+            fig.add_trace(go.Scatter3d(
+                x=['Account A', 'Account B', 'Account C'],
+                y=match_amounts,
+                z=[new_funds_A, new_funds_B, new_funds_C],
+                mode='markers',
+                marker=dict(
+                    size=10,
+                    color='red',  # set color to red
+                    opacity=0.8
+                ),
+                name='Match Amount'
+            ))
+
+            # Customize layout
+            fig.update_layout(
+                title='Quadratic Funding',
+                scene=dict(
+                    xaxis_title='Account',
+                    yaxis_title='Amount',
+                    zaxis_title='New Funds',
+                ),
+                width=700,
+                margin=dict(r=20, b=10, l=10, t=10)
+            )
+
+            # Display the figure
+            st.plotly_chart(fig)
         
         col1, col2, col3 = st.columns(3)
 
