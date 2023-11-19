@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import math
 import subprocess
 import os
-
+from connect import run_node_command  # Add this line
 
 
 def send_money(sender, receiver, amount, currency, description):
@@ -28,17 +28,18 @@ if 'donation_counts' not in st.session_state:
     st.session_state['donation_counts'] = {"Account A": 0, "Account B": 0, "Account C": 0}
 
 if not st.session_state['loggedin']:
-    st.title("Welcome to our Charity Blockchain!")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.image("https://th.bing.com/th/id/OIG.ityO4.xUVd6WFLRfzImF?pid=ImgGn", use_column_width=True)
-    with col2:
-        st.markdown("""
-        <div style="text-align: justify">
-        <h4>Welcome to the home designed to make crowd funded donations on a decentralized server.</h4>
-        This application serves a dual purpose: it supports open source developers and aids those in need, such as charities feeding the homeless, and more. Think of this as a blend of charity and support, leveraging the power of decentralized technology for good.
-        </div>
-        """, unsafe_allow_html=True)
+    st.title("Welcome to Crowd Secure!")
+    with st.container():
+        col1, col2 = st.columns(2)
+        with col1:
+            st.image("https://th.bing.com/th/id/OIG.ityO4.xUVd6WFLRfzImF?pid=ImgGn", use_column_width=True)
+        with col2:
+            st.markdown("""
+            <div style="text-align: justify">
+            <h4>Welcome to the home designed to make crowd funded donations on a decentralized server.</h4>
+            <p>This application serves a dual purpose: it supports open source developers and aids those in need, such as charities feeding the homeless, and more. Think of this as a blend of charity and support, leveraging the power of decentralized technology for good.<p>
+            </div>
+            """, unsafe_allow_html=True)
     
     with st.form(key='login_form'):
         username = st.text_input("Username")
@@ -58,7 +59,7 @@ else:
             st.session_state['loggedin'] = False
             st.info('Logged out successfully.')
             
-    st.sidebar.image("https://th.bing.com/th/id/OIG.ityO4.xUVd6WFLRfzImF?pid=ImgGn", use_column_width=True)
+    st.sidebar.image("https://shorturl.at/uvLU7", use_column_width=True)
 
     st.title(f"Welcome back, {st.session_state['username']}!")
 
@@ -138,14 +139,7 @@ else:
             submit_button = st.form_submit_button(label='Donate')
 
             if submit_button:
-                node_command = 'node C:\\Users\\aashi\\OneDrive\\Desktop\\MHack\\Backend\\src\\index.js ' + str(donation_amount) + ' "0.0.5906653"'
-                print(node_command)
-                process = subprocess.run(node_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                if process.returncode != 0:
-                    print("Error:", process.stderr.decode('utf-8'))
-                else:
-                    result = process.stdout.decode('utf-8')
-                    print(result)
+                run_node_command(donation_amount)
                 st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
                 st.session_state['donation_counts'][page] += 1  # Increment the count for the account
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
@@ -167,6 +161,7 @@ else:
             submit_button = st.form_submit_button(label='Donate')
 
             if submit_button:
+                run_node_command(donation_amount)
                 st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
                 st.session_state['donation_counts'][page] += 1  # Increment the count for the account
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
@@ -188,6 +183,7 @@ else:
             submit_button = st.form_submit_button(label='Donate')
 
             if submit_button:
+                run_node_command(donation_amount)
                 st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
                 st.session_state['donation_counts'][page] += 1  # Increment the count for the account
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
