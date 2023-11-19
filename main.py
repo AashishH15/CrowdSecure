@@ -139,7 +139,7 @@ else:
             submit_button = st.form_submit_button(label='Donate')
 
             if submit_button:
-                run_node_command(donation_amount)
+                run_node_command(donation_amount, "0.0.5906653")
                 st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
                 st.session_state['donation_counts'][page] += 1  # Increment the count for the account
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
@@ -161,7 +161,7 @@ else:
             submit_button = st.form_submit_button(label='Donate')
 
             if submit_button:
-                run_node_command(donation_amount)
+                run_node_command(donation_amount, "0.0.5906771")
                 st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
                 st.session_state['donation_counts'][page] += 1  # Increment the count for the account
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
@@ -183,7 +183,7 @@ else:
             submit_button = st.form_submit_button(label='Donate')
 
             if submit_button:
-                run_node_command(donation_amount)
+                run_node_command(donation_amount, "0.0.5906772")
                 st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
                 st.session_state['donation_counts'][page] += 1  # Increment the count for the account
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
