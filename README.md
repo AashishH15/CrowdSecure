@@ -35,7 +35,7 @@ This project was built using the following technologies.
 
 
 
-## Get Started Your Yourself!
+## Get Started Yourself!
 
 ``` git clone [repo] ```
 
