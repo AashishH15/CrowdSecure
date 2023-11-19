@@ -16,7 +16,7 @@ This project was built using these technologies.
 
 ## Features
 
-**🔗 Hedera API**
+**🔗 Simple Tracking of Ledger with Hedera SDK**
 
 **📱 Hosted on Streamlit**
 
