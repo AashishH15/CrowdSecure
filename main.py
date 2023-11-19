@@ -56,10 +56,41 @@ else:
 
     st.title(f"Welcome back, {st.session_state['username']}!")
 
-    page = st.sidebar.selectbox("Choose a Donation", ["Account A", "Account B", "Account C"])
+    page = st.sidebar.selectbox("Choose a Donation", ["Homepage", "Account A", "Account B", "Account C", "Donation History"])
     st.session_state['current_page'] = page
 
-    if page == "Account A":
+    if page == "Homepage":
+        st.subheader("Homepage")
+
+        # Add a welcome message
+        st.markdown(f"## Welcome back, {st.session_state['username']}!")
+        st.markdown("Here's a summary of your donations:")
+
+        # Create columns for the donation summary
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            user_donations = sum([donation['Amount'] for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username']])
+            st.markdown(f"**Total Donations Made:**")
+            st.markdown(f"## ${user_donations}")
+
+        with col2:
+            user_donation_count = len([donation for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username']])
+            st.markdown(f"**Number of Donations Made:**")
+            st.markdown(f"## {user_donation_count}")
+
+        with col3:
+            account_donations = {account: sum([donation['Amount'] for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username'] and donation['Account'] == account]) for account in ["Account A", "Account B", "Account C"]}
+            st.markdown(f"**Total Donations to Each Account:**")
+            for account, amount in account_donations.items():
+                st.markdown(f"{account}: ${amount}")
+
+        st.subheader("Latest Donations")
+        latest_donations = st.session_state['donations'][-5:]
+        for donation in latest_donations:
+            st.markdown(f"{donation['Donor']} donated ${donation['Amount']} to {donation['Account']}")
+    
+    elif page == "Account A":
         st.subheader("Account A")
 
         total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
@@ -70,7 +101,7 @@ else:
             submit_button = st.form_submit_button(label='Donate')
 
             if submit_button:
-                st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount})
+                st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
                 total_raised += donation_amount
                 progress = min(total_raised / goal_amount, 1)
@@ -87,7 +118,7 @@ else:
             submit_button = st.form_submit_button(label='Donate')
 
             if submit_button:
-                st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount})
+                st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
                 total_raised += donation_amount
                 progress = min(total_raised / goal_amount, 1)
@@ -104,7 +135,7 @@ else:
             submit_button = st.form_submit_button(label='Donate')
 
             if submit_button:
-                st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount})
+                st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
                 total_raised += donation_amount
                 progress = min(total_raised / goal_amount, 1)
