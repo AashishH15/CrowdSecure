@@ -88,7 +88,7 @@ else:
         # Display the total donations in a box
         st.markdown("## My Donation Stats")
         st.info(f"My Total Donation: ${user_donations}")
-        st.write('---------------------------------')
+        st.write('---')
 
         # Section for individual donation rounds
         st.markdown("## Global Donation Stats for the Current Round")
@@ -190,11 +190,14 @@ else:
             st.markdown(f"Number of Donations: {number_of_donations}")
             st.write(f"Match Amount for Campaign C: {st.session_state['donation_counts']['Account C']}")
 
-        st.write('---------------------------------')
+        st.write('---')
         st.markdown("## My Latest Donations")
         latest_donations = st.session_state['donations'][-5:]
         for donation in latest_donations:
             st.markdown(f"{donation['Donor']} donated ${donation['Amount']} to {donation['Account']}")
+        st.markdown("---")
+        st.markdown("##### Credits")
+        st.markdown("Image generation powered by Bing AI, excluding CloudSecure logo.")
     
     elif page == "Account A":
         st.subheader("Account A")
