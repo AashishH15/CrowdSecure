@@ -6,7 +6,7 @@ async function environmentSetup() {
 
   let transferAmount;
   let accountId;
-  const dataPath = '../../data/data.json';
+  const dataPath = 'C:/Users/aashi/OneDrive/Desktop/MHack/data/data.json';
   let data = fs.readFileSync(dataPath);
   let json = JSON.parse(data);
 
