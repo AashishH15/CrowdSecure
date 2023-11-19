@@ -129,6 +129,19 @@ else:
     
     elif page == "Account A":
         st.subheader("Account A")
+        # Add the title and description at the top of your page
+        st.title("Helping Hands Food Bank")
+        st.write("""
+        Helping Hands Food Bank is a local charity dedicated to fighting hunger in our community. We believe that access to nutritious food is a basic human right, and we are committed to providing food assistance to those in need.
+
+        Our food bank operates as a food distribution hub, collecting donated food items from generous individuals, supermarkets, and local farms. We then distribute these food items directly to families and individuals who are facing food insecurity.
+
+        In addition to food distribution, we also run educational programs aimed at promoting healthy eating habits and teaching cooking skills. Our goal is to not only provide immediate food assistance, but also to empower individuals to make healthy food choices.
+
+        We rely on the generosity of our community to carry out our mission. Whether it's through food donations, volunteering time, or financial contributions, every bit of support makes a difference in the lives of those we serve.
+
+        Join us in our fight against hunger. Together, we can ensure that no one in our community goes to bed hungry. Your support can make a real difference. Thank you.
+        """)
 
         total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
         goal_amount = 10000
@@ -151,6 +164,18 @@ else:
 
     elif page == "Account B":
         st.subheader("Account B")
+        st.title("Emergency Aid Disaster Relief")
+        st.write("""
+        Emergency Aid Disaster Relief is a non-profit organization that provides emergency assistance to people affected by natural disasters. We provide food, water, shelter, and medical care to those in need.
+        
+        We are a volunteer-based organization with no paid staff. All of our funding comes from donations and grants. We rely on the generosity of individuals like you to help us continue our work.
+                 
+        Our mission is to provide immediate relief to those who have lost everything due to a natural disaster. We work with local governments and other organizations to coordinate our efforts and ensure that we are providing the most effective assistance possible.
+                 
+        We have been providing emergency aid since 2005 when Hurricane Katrina devastated New Orleans. Since then, we have responded to many disasters including Hurricane Sandy, Typhoon Haiyan, and the Nepal Earthquake.
+                 
+        We are committed to helping people in need around the world. Your donation will go directly towards providing food, water, shelter, and medical care to those who need it most. Thank you for your support!
+        """)
 
         total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
         goal_amount = 10000
@@ -174,6 +199,18 @@ else:
     
     elif page == "Account C":
         st.subheader("Account C")
+        st.title("Bright Future Orphanage")
+        st.write("""
+        Bright Future Orphanage is a charity dedicated to providing a safe, nurturing environment for orphaned and vulnerable children. Our mission is to ensure that every child has the opportunity to grow, learn, and dream in a loving and supportive home.
+                 
+        We operate residential homes where children receive round-the-clock care from our dedicated staff. Each child is provided with nutritious meals, comfortable accommodation, and access to quality education and healthcare. We strive to create a family-like atmosphere where children can thrive and reach their full potential.
+
+        In addition to our residential homes, we also offer programs aimed at empowering older children and young adults. These include vocational training, life skills workshops, and scholarship opportunities to help them transition into independent living.
+
+        We believe that every child deserves a chance at a bright future, and with your support, we can make this a reality. Whether it's through volunteering, sponsoring a child, or making a donation, your contribution can make a significant difference in the lives of these children.
+
+        Together, we can give these children the love and care they need to succeed in life. Thank you for your support!
+        """)
 
         total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
         goal_amount = 10000
