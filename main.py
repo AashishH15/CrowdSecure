@@ -71,57 +71,82 @@ else:
         st.subheader("Homepage")
 
         # Section for individual donation rounds
-        st.markdown("## Your Donations for Current Round:")
+        st.markdown("## Global Donation Stats for the Current Round:")
         round_donations = {account: [donation for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username'] and donation['Account'] == account] for account in ["Account A", "Account B", "Account C"]}
 
+        if st.button("Unleash the Power of Quadratic Funding"):
+            # Get the current total funds for each project
+            # Replace these initial values with your actual total funds
+            totalFunds_A_current = sum([donation['Amount'] for donation in round_donations["Account A"]])
+            totalFunds_B_current = sum([donation['Amount'] for donation in round_donations["Account B"]])
+            totalFunds_C_current = sum([donation['Amount'] for donation in round_donations["Account C"]])
+                
+            # Replace ADonors, BDonors, CDonors with your actual donor counts
+            ADonors = len(round_donations["Account A"])
+            BDonors = len(round_donations["Account B"])
+            CDonors = len(round_donations["Account C"])
+
+            # Calculate new funds using quadratic funding function
+            new_funds_A, new_funds_B, new_funds_C = getAccountBalance(
+                10000, ADonors, BDonors, CDonors
+            )
+
+            # Update the total funds for each project
+            st.session_state['donation_counts']["Account A"] = round(new_funds_A,2)
+            st.session_state['donation_counts']["Account B"] = round(new_funds_B,2)
+            st.session_state['donation_counts']["Account C"] = round(new_funds_C,2)
+        
         col1, col2, col3 = st.columns(3)
 
         with col1:
             account = "Account A"
             st.markdown(f"**{account}:**")
             total_donations = sum([donation['Amount'] for donation in round_donations[account]])
-            st.markdown(f"Total Donations: ${total_donations}")
+            st.markdown(f"Crowd Funded Amount: ${total_donations}")
             number_of_donations = len(round_donations[account])
             st.markdown(f"Number of Donations: {number_of_donations}")
+            st.write(f"Match Amount for Campaign A: {st.session_state['donation_counts']['Account A']}")
 
         with col2:
             account = "Account B"
             st.markdown(f"**{account}:**")
             total_donations = sum([donation['Amount'] for donation in round_donations[account]])
-            st.markdown(f"Total Donations: ${total_donations}")
+            st.markdown(f"Crowd Funded Amount: ${total_donations}")
             number_of_donations = len(round_donations[account])
             st.markdown(f"Number of Donations: {number_of_donations}")
+            st.write(f"Match Amount for Campaign B: {st.session_state['donation_counts']['Account B']}")
 
         with col3:
             account = "Account C"
             st.markdown(f"**{account}:**")
             total_donations = sum([donation['Amount'] for donation in round_donations[account]])
-            st.markdown(f"Total Donations: ${total_donations}")
+            st.markdown(f"Crowd Funded Amount: ${total_donations}")
             number_of_donations = len(round_donations[account])
             st.markdown(f"Number of Donations: {number_of_donations}")
+            st.write(f"Match Amount for Campaign C: {st.session_state['donation_counts']['Account C']}")
 
         # Section for lifetime donations
-        st.markdown("## Your Lifetime Donations:")
+        st.markdown("## My Donation Stats:")
         col1, col2, col3 = st.columns(3)
 
         with col1:
             user_donations = sum([donation['Amount'] for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username']])
-            st.markdown(f"**Total Donations Made:**")
+            st.markdown(f"**MyTotal Donation:**")
             st.markdown(f"## ${user_donations}")
 
         with col2:
             account_donation_counts = {account: len([donation for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username'] and donation['Account'] == account]) for account in ["Account A", "Account B", "Account C"]}
-            st.markdown(f"**Number of Donations to Each Account:**")
+            st.markdown(f"**Number of Donations:**")
             for account, count in account_donation_counts.items():
                 st.markdown(f"{account}: {count}")
 
         with col3:
             account_donations = {account: sum([donation['Amount'] for donation in st.session_state['donations'] if donation['Donor'] == st.session_state['username'] and donation['Account'] == account]) for account in ["Account A", "Account B", "Account C"]}
-            st.markdown(f"**Total Donations to Each Account:**")
+            st.markdown(f"**My Donation to Each Campaign:**")
             for account, amount in account_donations.items():
                 st.markdown(f"{account}: ${amount}")
 
-        st.subheader("Latest Donations")
+        st.subheader("My Latest Donations")
         latest_donations = st.session_state['donations'][-5:]
         for donation in latest_donations:
             st.markdown(f"{donation['Donor']} donated ${donation['Amount']} to {donation['Account']}")
@@ -144,7 +169,7 @@ else:
         """)
 
         total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
-        goal_amount = 10000
+        goal_amount = 2000
         st.write(f"Goal amount: ${goal_amount}")
         st.write(f"Total raised from crowfunding: ${total_raised}")
         st.write(f"Number of donations: {st.session_state['donation_counts'][page]}")
@@ -178,7 +203,7 @@ else:
         """)
 
         total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
-        goal_amount = 10000
+        goal_amount = 7000
         st.write(f"Goal amount: ${goal_amount}")
         st.write(f"Total raised from crowdfunding: ${total_raised}")
         st.write(f"Number of donations: {st.session_state['donation_counts'][page]}")
@@ -213,7 +238,7 @@ else:
         """)
 
         total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
-        goal_amount = 10000
+        goal_amount = 1000
         st.write(f"Goal amount: ${goal_amount}")
         st.write(f"Total raised from crowdfunding: ${total_raised}")
         st.write(f"Number of donations: {st.session_state['donation_counts'][page]}")
@@ -240,3 +265,5 @@ else:
         # Display each donation
         for donation in user_donations:
             st.markdown(f"You donated ${donation['Amount']} to {donation['Account']}")
+
+        
