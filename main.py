@@ -24,15 +24,24 @@ if not st.session_state['loggedin']:
         This application serves a dual purpose: it supports open source developers and aids those in need, such as charities feeding the homeless, and more. Think of this as a blend of charity and support, leveraging the power of decentralized technology for good.
         </div>
         """, unsafe_allow_html=True)
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-
-    if st.button("Login"):
-        st.session_state['loggedin'] = True
-        st.session_state['username'] = username
+    with st.form(key='login_form'):
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        submit_button = st.form_submit_button("Login")
+        if submit_button:
+            if username and password:
+                st.session_state['loggedin'] = True
+                st.session_state['username'] = username
+                st.success("Logged in successfully!")  # Display success message
+            else:
+                st.error("Both username and password must be filled in to log in.")
 
 else:
-    st.title(f"Welcome back, {st.session_state['username']}!")
+    if st.session_state['loggedin']:
+        if st.sidebar.button('Logout'):  # Add a logout button in the sidebar
+            st.session_state['loggedin'] = False
+            st.info('Click again to logout.')
+        st.title(f"Welcome back, {st.session_state['username']}!")
 
     page = st.sidebar.selectbox("Choose a page", ["Make a Donation/Transfer Money", "Live Donations"])
 
@@ -54,7 +63,6 @@ else:
     elif page == "Live Donations":
         st.subheader("Live Donations")
 
-        # Assume we have these variables
         total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
         goal_amount = 10000
 
