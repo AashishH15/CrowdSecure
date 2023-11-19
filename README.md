@@ -25,3 +25,23 @@ This project was built using these technologies.
 ## Get Started Your Yourself!
 
 ``` git clone [repo] ```
+
+Then let's start with setting up the backend
+
+``` cd Backend\src ```
+
+``` npm i ```
+
+This will download all your required libraries
+
+Then find yourself back to the parent folder and install Python environment
+
+``` python -m venv .venv ```
+
+Close and re-open terminal. It should auto open you into your virtual environment
+
+``` pip install streamlit ```
+
+Now you're ready to deploy!
+
+``` streamlit run main.py ```
