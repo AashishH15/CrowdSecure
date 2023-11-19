@@ -4,7 +4,7 @@ const { Client,
         AccountCreateTransaction, 
         AccountBalanceQuery, 
         Hbar, 
-        TransferTransaction } = require("@hashgraph/sdk");\
+        TransferTransaction } = require("@hashgraph/sdk");
 
 require('dotenv').config();
 const fs = require('fs');
