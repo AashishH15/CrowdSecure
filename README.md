@@ -21,3 +21,7 @@ This project was built using these technologies.
 **🖥️ Used advantages of Web3 to make secure & decentralized transactions**
 
 **🖥️ Used a similar variation of GitCoin's quadratic funding formuala to provide a democratized allocation of funding opportunities to open-source projects/social campaigns.**
+
+## Get Started Your Yourself!
+
+``` git clone [repo] ```
