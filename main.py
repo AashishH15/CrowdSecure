@@ -21,6 +21,9 @@ if 'donations' not in st.session_state:
 if 'current_page' not in st.session_state:
     st.session_state['current_page'] = ''
 
+if 'donation_counts' not in st.session_state:
+    st.session_state['donation_counts'] = {"Account A": 0, "Account B": 0, "Account C": 0}
+
 if not st.session_state['loggedin']:
     st.title("Welcome to our Charity Blockchain!")
     col1, col2 = st.columns(2)
@@ -71,20 +74,26 @@ else:
         with col1:
             account = "Account A"
             st.markdown(f"**{account}:**")
-            for donation in round_donations[account]:
-                st.markdown(f"Donated ${donation['Amount']}")
+            total_donations = sum([donation['Amount'] for donation in round_donations[account]])
+            st.markdown(f"Total Donations: ${total_donations}")
+            number_of_donations = len(round_donations[account])
+            st.markdown(f"Number of Donations: {number_of_donations}")
 
         with col2:
             account = "Account B"
             st.markdown(f"**{account}:**")
-            for donation in round_donations[account]:
-                st.markdown(f"Donated ${donation['Amount']}")
+            total_donations = sum([donation['Amount'] for donation in round_donations[account]])
+            st.markdown(f"Total Donations: ${total_donations}")
+            number_of_donations = len(round_donations[account])
+            st.markdown(f"Number of Donations: {number_of_donations}")
 
         with col3:
             account = "Account C"
             st.markdown(f"**{account}:**")
-            for donation in round_donations[account]:
-                st.markdown(f"Donated ${donation['Amount']}")
+            total_donations = sum([donation['Amount'] for donation in round_donations[account]])
+            st.markdown(f"Total Donations: ${total_donations}")
+            number_of_donations = len(round_donations[account])
+            st.markdown(f"Number of Donations: {number_of_donations}")
 
         # Section for lifetime donations
         st.markdown("## Your Lifetime Donations:")
@@ -117,6 +126,9 @@ else:
 
         total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
         goal_amount = 10000
+        st.write(f"Goal amount: ${goal_amount}")
+        st.write(f"Total raised: ${total_raised}")
+        st.write(f"Number of donations: {st.session_state['donation_counts'][page]}")
 
         with st.form(key='donation_form'):
             donation_amount = st.number_input('Enter donation amount', min_value=1)
@@ -124,6 +136,7 @@ else:
 
             if submit_button:
                 st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
+                st.session_state['donation_counts'][page] += 1  # Increment the count for the account
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
                 total_raised += donation_amount
                 progress = min(total_raised / goal_amount, 1)
@@ -134,6 +147,9 @@ else:
 
         total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
         goal_amount = 10000
+        st.write(f"Goal amount: ${goal_amount}")
+        st.write(f"Total raised: ${total_raised}")
+        st.write(f"Number of donations: {st.session_state['donation_counts'][page]}")
 
         with st.form(key='donation_form'):
             donation_amount = st.number_input('Enter donation amount', min_value=1)
@@ -141,6 +157,7 @@ else:
 
             if submit_button:
                 st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
+                st.session_state['donation_counts'][page] += 1  # Increment the count for the account
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
                 total_raised += donation_amount
                 progress = min(total_raised / goal_amount, 1)
@@ -151,6 +168,9 @@ else:
 
         total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
         goal_amount = 10000
+        st.write(f"Goal amount: ${goal_amount}")
+        st.write(f"Total raised: ${total_raised}")
+        st.write(f"Number of donations: {st.session_state['donation_counts'][page]}")
 
         with st.form(key='donation_form'):
             donation_amount = st.number_input('Enter donation amount', min_value=1)
@@ -158,6 +178,7 @@ else:
 
             if submit_button:
                 st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
+                st.session_state['donation_counts'][page] += 1  # Increment the count for the account
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
                 total_raised += donation_amount
                 progress = min(total_raised / goal_amount, 1)
