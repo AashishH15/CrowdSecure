@@ -1,12 +1,11 @@
+import sys
+sys.path.append('main_src')
+
 import streamlit as st
 import matplotlib.pyplot as plt
-import math
-import subprocess
-import os
 from connect import run_node_command
 from quadratic_funding import getQuadFunding
 from downloadData import getAccountBalance, getTransactionReceipt, getKeys
-import random
 
 account_A_id, account_B_id, account_C_id = getKeys()
 
@@ -170,7 +169,7 @@ else:
             if donation_amount > 0:
 
                 if submit_button and donation_amount > 0:
-                    run_node_command(donation_amount, "0.0.5906653")
+                    run_node_command(donation_amount, account_A_id)
                     if getTransactionReceipt(account_A_id) == "SUCCESS":
                         st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
                         st.session_state['donation_counts'][page] += 1  # Increment the count for the account
@@ -212,7 +211,7 @@ else:
             if donation_amount > 0:
 
                 if submit_button and donation_amount > 0:
-                    run_node_command(donation_amount, "0.0.5906653")
+                    run_node_command(donation_amount, account_B_id)
                     if getTransactionReceipt(account_B_id) == "SUCCESS":
                         st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
                         st.session_state['donation_counts'][page] += 1  # Increment the count for the account
@@ -254,7 +253,7 @@ else:
             if donation_amount > 0:
 
                 if submit_button and donation_amount > 0:
-                    run_node_command(donation_amount, "0.0.5906653")
+                    run_node_command(donation_amount, account_C_id)
                     if getTransactionReceipt(account_C_id) == "SUCCESS":
                         st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
                         st.session_state['donation_counts'][page] += 1  # Increment the count for the account
