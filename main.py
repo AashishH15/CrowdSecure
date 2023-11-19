@@ -125,6 +125,7 @@ else:
         latest_donations = st.session_state['donations'][-5:]
         for donation in latest_donations:
             st.markdown(f"{donation['Donor']} donated ${donation['Amount']} to {donation['Account']}")
+
     
     elif page == "Account A":
         st.subheader("Account A")
@@ -132,7 +133,7 @@ else:
         total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
         goal_amount = 10000
         st.write(f"Goal amount: ${goal_amount}")
-        st.write(f"Total raised: ${total_raised}")
+        st.write(f"Total raised from crowfunding: ${total_raised}")
         st.write(f"Number of donations: {st.session_state['donation_counts'][page]}")
 
         with st.form(key='donation_form'):
@@ -154,7 +155,7 @@ else:
         total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
         goal_amount = 10000
         st.write(f"Goal amount: ${goal_amount}")
-        st.write(f"Total raised: ${total_raised}")
+        st.write(f"Total raised from crowdfunding: ${total_raised}")
         st.write(f"Number of donations: {st.session_state['donation_counts'][page]}")
 
         with st.form(key='donation_form'):
@@ -166,9 +167,10 @@ else:
                 st.session_state['donations'].append({"Donor": st.session_state['username'], "Amount": donation_amount, "Account": page})
                 st.session_state['donation_counts'][page] += 1  # Increment the count for the account
                 st.success(f"You donated ${donation_amount}! Thank you for your generosity.")
-                total_raised += donation_amount
+                total_raised += donation_amount 
                 progress = min(total_raised / goal_amount, 1)
                 st.progress(progress)
+            
     
     elif page == "Account C":
         st.subheader("Account C")
@@ -176,7 +178,7 @@ else:
         total_raised = sum([donation['Amount'] for donation in st.session_state['donations'] if 'Amount' in donation])
         goal_amount = 10000
         st.write(f"Goal amount: ${goal_amount}")
-        st.write(f"Total raised: ${total_raised}")
+        st.write(f"Total raised from crowdfunding: ${total_raised}")
         st.write(f"Number of donations: {st.session_state['donation_counts'][page]}")
 
         with st.form(key='donation_form'):
