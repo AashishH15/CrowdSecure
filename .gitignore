@@ -1,1 +1,4 @@
 .venv/
+Backend/src/.env
+.env
+Backend/src/node_modules/
