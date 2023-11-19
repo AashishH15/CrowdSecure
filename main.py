@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import math
 import subprocess
 import os
+import time
 from connect import run_node_command
 from quadratic_funding import getAccountBalance
 
