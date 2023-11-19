@@ -28,6 +28,13 @@ This project was built using the following technologies.
 
 **🖥️ Used a similar variation of GitCoin's quadratic funding formuala to provide a democratized allocation of funding opportunities to open-source projects/social campaigns.**
 
+## How It Works
+
+
+![ArchitectureMap](https://github.com/AashishH15/CrowdSecure/assets/10564686/ea0e2d60-69b4-4ce9-a4c4-51b73cdb01dc)
+
+
+
 ## Get Started Your Yourself!
 
 ``` git clone [repo] ```
