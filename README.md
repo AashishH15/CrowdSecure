@@ -3,7 +3,7 @@
 
 ## Best Cybersecurity Hack at MHacks16
 
-Empowering philathrophy with transparent, secure donations through our blockchain-based crowdfunding platform by leveraging Hedera's decentralized network and Gitcoin's quadratic funding match model.
+Empowering philanthropy with transparent, secure donations through our blockchain-based crowdfunding platform by leveraging Hedera's decentralized network and Gitcoin's quadratic funding match model.
 
 <img width="446" alt="web3" src="https://github.com/AashishH15/Crowd-Secure/assets/10564686/f2afbe11-4765-43e8-99ff-24707199459e">
 
@@ -28,7 +28,9 @@ This project was built using the following technologies.
 
 **🖥️ Used advantages of Web3 to make secure & decentralized transactions**
 
-**🖥️ Used a similar variation of GitCoin's quadratic funding formuala to provide a democratized allocation of funding opportunities to open-source projects/social campaigns.**
+**🖥️ Used a similar variation of GitCoin's quadratic funding formula to provide a democratized allocation of funding opportunities to open-source projects/social campaigns.**
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for component layout and Hedera data flow.
 
 ## How It Works
 
@@ -39,7 +41,12 @@ This project was built using the following technologies.
 
 ## Get Started Yourself!
 
-``` git clone [repo] ```
+```bash
+git clone https://github.com/AashishH15/CrowdSecure.git
+cd CrowdSecure
+```
+
+Copy `.env.example` to `.env` and add your Hedera testnet credentials before running.
 
 Then let's start with setting up the backend
 
@@ -54,6 +61,10 @@ Then find yourself back to the parent folder and install Python environment
 ``` python -m venv .venv ```
 
 Close and re-open terminal. It should auto open you into your virtual environment
+
+``` pip install -r requirements.txt ```
+
+Or install Streamlit only:
 
 ``` pip install streamlit ```
 
